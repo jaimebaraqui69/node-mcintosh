@@ -42,14 +42,14 @@ function send(val, cb) {
 
 McIntosh.prototype.volume_up = function () {
     if (this.serialCommandMode == "Zone") {
-        send.call(this, "(VUP Z1)\n");
+        send.call(this, "(VOL up)\n");
     } else {
         send.call(this, "(VOL up)\n");
     }
 };
 McIntosh.prototype.volume_down = function () {
     if (this.serialCommandMode == "Zone") {
-        send.call(this, "(VDN Z1)\n");
+        send.call(this, "(VOL do)\n");
     } else {
         send.call(this, "(VOL do)\n");
     }
@@ -63,7 +63,7 @@ McIntosh.prototype.set_volume = function (val) {
     var self = this;
     this.volumetimer = setTimeout(() => {
         if (self.serialCommandMode == "Zone") {
-            send.call(this, "(VST Z1 " + val + ")\n");
+            send.call(this, "(VOL " + val + ")\n");
         } else {
             send.call(this, "(VOL " + val + ")\n");
         }
@@ -74,7 +74,7 @@ McIntosh.prototype.get_status = function () {
 };
 McIntosh.prototype.power_off = function () {
     if (this.serialCommandMode == "Zone") {
-        send.call(this, "(POF Z1)\n");
+        send.call(this, "(PWR 0)\n");
     } else {
         send.call(this, "(PWR 0)\n");
     }
@@ -87,7 +87,7 @@ McIntosh.prototype.power_off = function () {
 };
 McIntosh.prototype.power_on = function () {
     if (this.serialCommandMode == "Zone") {
-        send.call(this, "(PON Z1)\n");
+        send.call(this, "(PWR 1)\n");
     } else {
         send.call(this, "(PWR 1)\n");
     }
@@ -95,14 +95,14 @@ McIntosh.prototype.power_on = function () {
 };
 McIntosh.prototype.set_source = function (val) {
     if (this.serialCommandMode == "Zone") {
-        send.call(this, "(INP Z1 " + val + ")\n");
+        send.call(this, "(INP " + val + ")\n");
     } else {
         send.call(this, "(INP " + val + ")\n");
     }
 };
 McIntosh.prototype.mute = function (val) {
     if (this.serialCommandMode == "Zone") {
-        send.call(this, "(MUT Z1 " + val + ")\n");
+        send.call(this, "(MUT " + val + ")\n");
     } else {
         send.call(this, "(MUT " + val + ")\n");
     }
@@ -125,7 +125,7 @@ McIntosh.prototype.init = function (opts, closecb) {
     };
 
     this.initializing = true;
-    this.serialCommandMode = "Zone";
+    this.serialCommandMode = "noZone";
 
     this._port = new SerialPort({
         path: opts.port,
